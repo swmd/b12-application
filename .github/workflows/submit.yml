@@ -1,0 +1,25 @@
+name: B12 Application Submission
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Inject action run link and submit
+        run: |
+          sed -i "s|REPLACE_ME|https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|" submit.py
+          python submit.py
